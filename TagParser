@@ -1,0 +1,91 @@
+// Shan Rajapakshe
+// 34125120
+// 13/02/2014
+
+import java.io.*;
+import java.util.Scanner;
+
+public class TagParser {
+
+	public String[] output;			// make private, only public for testing purposes!
+	private String source;
+		
+	public TagParser(String the_source) {
+		
+		source = the_source;
+		output = new String[36];
+		PrintWriter outputfile = null;
+		
+		for (int count = 0; count < output.length; count++) {
+			output[count] = "-1";
+		}
+		
+		try { 
+			outputfile = new PrintWriter("a2-tagsOnly.txt");
+			}
+		catch (IOException exception) {
+			System.err.println("Could not create file");
+			exception.printStackTrace();
+		}
+		finally {
+			if (outputfile != null) {
+				outputfile.close();
+			}
+		}
+	}
+	
+	public void parseTT() {
+		File readFrom = new File(source);
+		try {
+			Scanner inputFile = new Scanner(readFrom);
+			int numberOfStrings = 0;
+			while (inputFile.hasNextLine()) {
+				
+				String trial = inputFile.nextLine();
+				for (int i = 0; i < trial.length() - 2; i++) {
+					if (trial.charAt(i) == 60 & trial.charAt(i+1) == 116 & trial.charAt(i+2) == 116) {
+						int count = i + 4;		//puts count at first index of substring
+						
+						int check = 1;
+						while (check == 1) {
+							if (trial.charAt(count) == '<' & trial.charAt(count + 1) == '/'  & trial.charAt(count + 2) == 't' & trial.charAt(count + 3) == 't') {
+							output[numberOfStrings] = trial.substring(i + 4, count);
+							numberOfStrings++; 
+							check = 0;
+							}
+							else {
+							count++;
+							}
+						}
+					}
+				}
+			}
+		}
+		catch (FileNotFoundException exception) {
+			System.err.println("Could not find " + source);
+			exception.printStackTrace();
+		}
+	}
+	
+	
+	public void storeTT() {
+		PrintWriter outputfile = null;
+		try {
+			outputfile = new PrintWriter("a2-tagsOnly.txt");
+			for (int i = 0; i < output.length ; i++) {
+				outputfile.println(output[i]);
+			}
+		}
+		catch (IOException e) {
+			System.err.println("Could not create file");
+			e.printStackTrace();
+			
+		}
+		finally {
+			if (outputfile  != null) {
+				outputfile.close();
+			}
+		}
+	}
+	
+}

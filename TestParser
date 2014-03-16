@@ -1,0 +1,15 @@
+import java.io.*;
+public class TestParser {
+
+	public static void main(String[] args) {
+
+		TagParser tagger = new TagParser("a2.html");
+		tagger.parseTT();
+		for (int i = 0; i < tagger.output.length ; i++) {
+			System.out.println(tagger.output[i]);
+		}
+		tagger.storeTT();
+
+	}
+
+}
